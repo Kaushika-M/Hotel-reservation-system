@@ -96,3 +96,35 @@ def admin(request: Request):
             "rooms": rooms
         }
     )
+
+@app.post("/add_room")
+def add_room(
+    room_num:int=Form(...),
+    status:str=Form(...),
+    room_type:str=Form(...),
+    price:int=Form(...),
+    description:str=Form(...),
+    capacity:int=Form(...)
+):
+    db = SessionLocal()
+
+    existing_room = db.query(Room).filter(Room.room_num == room_num).first()
+
+    if existing_room is not None:
+        db.close()
+        return "Room number already exists"
+ 
+    room=Room(
+        room_num=room_num,
+        status=status,
+        room_type=room_type,
+        price=price,
+        description=description,
+        capacity=capacity
+    )    
+    db.add(room)
+    db.commit()
+    db.refresh(room)
+    db.close()
+
+    return RedirectResponse(url="/admin",status_code=303)
