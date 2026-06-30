@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 
 from app.database.database import Base, engine
 from app.models.customer import Customer
+from app.models.room import Room
 
 from fastapi import Form
 from fastapi.responses import RedirectResponse
@@ -79,3 +80,4 @@ def signin(
     db.close()
 
     return RedirectResponse(url="/search", status_code=303)
+
