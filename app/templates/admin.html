@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <h3>HOTEL ADMIN PANEL</h3>
+    <p>Add rooms</p>
+    <form action="/add_room" method="POST">
+        <label for="room_num">Room Number:</label>
+        <input type="number" placeholder="enter room number" id="room_num" name="room_num">
+        <label for="room_type">Room Type:</label>
+        <select name="room_type">
+            <option>Standard</option>
+            <option>Deluxe</option>
+            <option>Suite</option>
+        </select>
+        <label for="price">Price:</label>
+        <input type="number" placeholder="enter amount" id="price" name= "price">
+        <label for="capacity">Capacity:</label>
+        <input type="number" placeholder="enter capacity" id="capacity" name="capacity">
+        <label for="status">Status:</label>
+        <select name="status">
+            <option>Available</option>
+            <option>Booked</option>
+        </select>
+        <label for="description">Description:</label>
+        <textarea name="description" id="description"></textarea>
+        <button>Add room</button>
+    </form>
+    <h3>Existing Rooms</h3>
+
+    <table border="1" cellpadding="8">
+    <tr>
+        <th>Room Number</th>
+        <th>Room Type</th>
+        <th>Price</th>
+        <th>Capacity</th>
+        <th>Status</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+
+    <tr>
+        <td>101</td>
+        <td>Deluxe</td>
+        <td>2500</td>
+        <td>2</td>
+        <td>Available</td>
+        <td>AC, TV, Wi-Fi</td>
+        <td>
+            <button>Edit</button>
+            <button>Delete</button>
+        </td>
+    </tr>
+
+    </table>
+</body>
+</html>

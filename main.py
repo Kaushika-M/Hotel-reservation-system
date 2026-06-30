@@ -81,3 +81,9 @@ def signin(
 
     return RedirectResponse(url="/search", status_code=303)
 
+    @app.get("/admin",response_class=HTMLResponse)
+    def admin(request:Request,):
+        return templates.TemplateResponse(
+            "admin.html",
+            {"request": request}
+        )
