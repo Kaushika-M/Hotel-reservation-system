@@ -81,9 +81,18 @@ def signin(
 
     return RedirectResponse(url="/search", status_code=303)
 
-@app.get("/admin",response_class=HTMLResponse)
-def admin(request:Request,):
+@app.get("/admin", response_class=HTMLResponse)
+def admin(request: Request):
+    db = SessionLocal()
+
+    rooms = db.query(Room).all()
+
+    db.close()
+
     return templates.TemplateResponse(
         "admin.html",
-        {"request": request}
+        {
+            "request": request,
+            "rooms": rooms
+        }
     )
