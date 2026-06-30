@@ -62,7 +62,7 @@ def signup(request:Request):
         {"request": request}
     )
 
-@app.post("/signin",response_class=HTMLResponse)
+@app.post("/signin")
 def signin(
     email:str=Form(...),
     password:str=Form(...)
