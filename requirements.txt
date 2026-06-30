@@ -1,0 +1,4 @@
+customer: sign up,login,search rooms,book rooms,pay
+,booking history
+
+admin: login,add,update,del rooms,check bookings,customers
