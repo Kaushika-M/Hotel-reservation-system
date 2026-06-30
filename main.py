@@ -60,3 +60,22 @@ def signup(request:Request):
         "signin.html",
         {"request": request}
     )
+
+@app.post("/signin",response_class=HTMLResponse)
+def signin(
+    email:str=Form(...),
+    password:str=Form(...)
+):
+    db=SessionLocal()
+    customer = db.query(Customer).filter(Customer.email == email).first()
+    if customer is None:
+        db.close()
+        return "Email not registered"
+
+    if customer.password != password:
+        db.close()
+        return "Incorrect password"
+
+    db.close()
+
+    return RedirectResponse(url="/search", status_code=303)
