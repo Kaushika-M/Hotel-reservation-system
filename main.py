@@ -128,3 +128,17 @@ def add_room(
     db.close()
 
     return RedirectResponse(url="/admin",status_code=303)
+
+@app.get("/delete_room/{room_id}")
+def delete_room(room_id:int):
+    db=SessionLocal()
+    room=db.query(Room).filter(Room.id==room_id).first()
+    if room is None:
+        db.close()
+        return "Room Not Found"
+
+    db.delete(room)
+    db.commit()
+    db.refresh(room)
+    db.close()
+    return RedirectResponse(url="/admin",status_code=303) 

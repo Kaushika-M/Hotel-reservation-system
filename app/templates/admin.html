@@ -42,20 +42,25 @@
         <th>Description</th>
         <th>Action</th>
     </tr>
-
+    {% for room in rooms %}
     <tr>
-        <td>101</td>
-        <td>Deluxe</td>
-        <td>2500</td>
-        <td>2</td>
-        <td>Available</td>
-        <td>AC, TV, Wi-Fi</td>
+        <td>{{ room.room_num }}</td>
+        <td>{{ room.room_type }}</td>
+        <td>{{ room.price }}</td>
+        <td>{{ room.capacity }}</td>
+        <td>{{ room.status }}</td>
+        <td>{{ room.description }}</td>
         <td>
-            <button>Edit</button>
-            <button>Delete</button>
+             <a href="/edit_room/{{ room.id }}">
+                <button>Edit</button>
+             </a>
+
+             <a href="/delete_room/{{ room.id }}">
+                <button>Delete</button>
+             </a>
         </td>
     </tr>
-
+    {% endfor %}
     </table>
 </body>
 </html>
