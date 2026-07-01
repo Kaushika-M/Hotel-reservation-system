@@ -139,11 +139,10 @@ def delete_room(room_id:int):
 
     db.delete(room)
     db.commit()
-    db.refresh(room)
     db.close()
     return RedirectResponse(url="/admin",status_code=303)
 
-@app.get("/edit_room/{room_id},response_class=HTMLResponse")
+@app.get("/edit_room/{room_id}",response_class=HTMLResponse)
 def edit_room(request:Request,room_id:int):
     db=SessionLocal()
     room=db.query(Room).filter(Room.id==room_id).first()
