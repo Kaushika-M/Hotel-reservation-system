@@ -144,12 +144,17 @@ def delete_room(room_id:int):
     return RedirectResponse(url="/admin",status_code=303)
 
 @app.get("/edit_room/{room_id},response_class=HTMLResponse")
-def edit_room(room_id:int):
+def edit_room(request:Request,room_id:int):
     db=SessionLocal()
     room=db.query(Room).filter(Room.id==room_id).first()
     if room is None:
         db.close()
-        return "Room Not found"
-    
+        return "Room Not found"    
     db.close()
-    return RedirectResponse(url="/admin",status_code=303)
+    return templates.TemplateResponse(
+        "edit_room.html",
+        {
+            "request": request,
+            "room": room
+        }
+    )
