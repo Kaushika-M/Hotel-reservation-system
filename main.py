@@ -158,3 +158,30 @@ def edit_room(request:Request,room_id:int):
             "room": room
         }
     )
+
+@app.post("/edit_room/{room_id}")
+def update_room(room_id: int,
+    room_num: int = Form(...),
+    room_type: str = Form(...),
+    price: int = Form(...),
+    capacity: int = Form(...),
+    status: str = Form(...),
+    description: str = Form(...)
+):
+    db=SessionLocal()
+    room=db.query(Room).filter(Room.id==room_id).first()
+    if room is None:
+        db.close()
+        return "Room not found"
+
+    room.room_num = room_num
+    room.room_type = room_type
+    room.price = price
+    room.capacity = capacity
+    room.status = status
+    room.description = description
+
+    db.commit() 
+    db.refresh(room)
+    db.close()
+    return RedirectResponse(url="/admin",status_code=303)
