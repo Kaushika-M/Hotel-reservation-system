@@ -182,6 +182,5 @@ def update_room(room_id: int,
     room.description = description
 
     db.commit() 
-    db.refresh(room)
     db.close()
     return RedirectResponse(url="/admin",status_code=303)
