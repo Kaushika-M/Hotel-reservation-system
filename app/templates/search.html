@@ -25,6 +25,39 @@
   <button>Search</button>
   </form>
   <h3>Available Rooms</h3>
-  <table></table>
+  
+  <h3>Available Rooms</h3>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Room Number</th>
+        <th>Room Type</th>
+        <th>Capacity</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+
+    {% if rooms %}
+        {% for room in rooms %}
+        <tr>
+            <td>{{ room.room_num }}</td>
+            <td>{{ room.room_type }}</td>
+            <td>{{ room.capacity }}</td>
+            <td>₹{{ room.price }}</td>
+            <td>{{ room.description }}</td>
+            <td>
+                <a href="/room/{{ room.id }}">
+                    <button>Book</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="6">No rooms available.</td>
+        </tr>
+    {% endif %}
+</table>
 </body>
 </html>
