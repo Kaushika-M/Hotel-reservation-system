@@ -183,3 +183,17 @@ def update_room(room_id: int,
     db.commit() 
     db.close()
     return RedirectResponse(url="/admin",status_code=303)
+
+@app.get("/search",response_class=HTMLResponse)
+def search(request:Request):
+    db=SessionLocal()
+    rooms=db.query(Room).filter(Room.status=="Available").all()
+    if not rooms:
+        db.close()
+        return "No Available Rooms"
+
+    db.close() 
+    return templates.TemplateResponse("search.html",
+                                      {"request":request,
+                                      "rooms":rooms
+                                      })
