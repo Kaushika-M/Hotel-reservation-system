@@ -209,3 +209,15 @@ def search(request:Request,
                                       {"request":request,
                                       "rooms":rooms
                                       })
+
+@app.get("/room/{room_id}",response_class=HTMLResponse)
+def detail(request:Request,room_id:int):
+    db=SessionLocal()
+    room=db.query(Room).filter(Room.id==room_id).first()
+    if room is None:
+        db.close()
+        return "Room not found"
+    db.close()
+    return templates.TemplateResponse("detail.html",
+                                     {"request":request,
+                                      "room":room})
