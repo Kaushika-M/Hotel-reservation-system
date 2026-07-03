@@ -185,9 +185,21 @@ def update_room(room_id: int,
     return RedirectResponse(url="/admin",status_code=303)
 
 @app.get("/search",response_class=HTMLResponse)
-def search(request:Request):
+def search(request:Request,
+           room_type:str="",
+           capacity:int=None,
+           price:int=None
+):
     db=SessionLocal()
-    rooms=db.query(Room).filter(Room.status=="Available").all()
+    query=db.query(Room).filter(Room.status=="Available")
+    if room_type:
+        query=query.filter(Room.room_type==room_type)
+    if capacity:
+        query=query.filter(Room.capacity>=capacity)
+    if price:
+        query = query.filter(Room.price<=price)    
+
+    rooms=query.all()
     if not rooms:
         db.close()
         return "No Available Rooms"
