@@ -10,9 +10,14 @@ from fastapi import Form
 from fastapi.responses import RedirectResponse
 from app.database.database import SessionLocal
 
+from starlette.middleware.sessions import SessionMiddleware
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.add_middleware(SessionMiddleware,
+    secret_key="my_secret_key"
+)
 
 templates = Jinja2Templates(directory="app/templates")
 
@@ -63,7 +68,7 @@ def signup(request:Request):
     )
 
 @app.post("/signin")
-def signin(
+def signin(request:Request,
     email:str=Form(...),
     password:str=Form(...)
 ):
@@ -76,7 +81,8 @@ def signin(
     if customer.password != password:
         db.close()
         return "Incorrect password"
-
+    request.session["customer_id"]=customer.id
+    
     db.close()
 
     return RedirectResponse(url="/search", status_code=303)
@@ -213,6 +219,10 @@ def search(request:Request,
 @app.get("/room/{room_id}",response_class=HTMLResponse)
 def detail(request:Request,room_id:int):
     db=SessionLocal()
+    customer_id = request.session.get("customer_id")
+
+    if customer_id is None:
+        return RedirectResponse(url="/sigin",status_code=303) 
     room=db.query(Room).filter(Room.id==room_id).first()
     if room is None:
         db.close()
