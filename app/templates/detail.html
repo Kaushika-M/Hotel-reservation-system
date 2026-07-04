@@ -6,6 +6,24 @@
     <title>Room Details</title>
 </head>
 <body>
-    
+    <h3>Room Details</h3>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Room Number</th>
+            <th>Room Type</th>
+            <th>Capacity</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>{{room.room_num}}</td>
+            <td>{{room.room_type}}</td>
+            <td>{{room.capacity}}</td>
+            <td>{{room.price}}</td>
+            <td>{{room.description}}</td>   
+        </tr>
+    </table>
+    <a href="/confirmation/{room.id}"><button>Confirm Booking</button></a>
+    <a href="/search"><button>Back to Search</button></a>
 </body>
 </html>
