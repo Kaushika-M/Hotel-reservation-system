@@ -5,12 +5,14 @@ from fastapi.templating import Jinja2Templates
 from app.database.database import Base, engine
 from app.models.customer import Customer
 from app.models.room import Room
+from app.models.room import Booking 
 
 from fastapi import Form
 from fastapi.responses import RedirectResponse
 from app.database.database import SessionLocal
 
 from starlette.middleware.sessions import SessionMiddleware
+from datetime import date
 
 Base.metadata.create_all(bind=engine)
 
@@ -231,3 +233,45 @@ def detail(request:Request,room_id:int):
     return templates.TemplateResponse("detail.html",
                                      {"request":request,
                                       "room":room})
+
+@app.post("/confirmation/{room_id}")
+def confirm_booking(request: Request,room_id: int,
+    check_in: date = Form(...),
+    check_out: date = Form(...)
+):
+    db = SessionLocal()
+
+    customer_id = request.session.get("customer_id")
+
+    if customer_id is None:
+        db.close()
+        return RedirectResponse(url="/signin", status_code=303)
+
+    room = db.query(Room).filter(Room.id == room_id).first()
+
+    if room is None:
+        db.close()
+        return "Room not found"
+
+    booking = Booking(
+        customer_id=customer_id,
+        room_id=room.id,
+        check_in=check_in,
+        check_out=check_out,
+        price=room.price,
+        status="Confirmed"
+    )
+
+    db.add(booking)
+    room.status = "Booked"
+    db.commit()
+    db.close()
+
+    return RedirectResponse(url="/success", status_code=303)
+
+@app.get("/success",response_class=HTMLResponse)
+def success(request:Request):
+    return templates.TemplateResponse("success.html",
+                                      {
+                                          "request":request
+                                      })
