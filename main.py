@@ -275,3 +275,17 @@ def success(request:Request):
                                       {
                                           "request":request
                                       })
+
+@app.get("/history",response_class=HTMLResponse)
+def history(request:Request):
+    customer_id=request.session.get("customer_id")
+    if bookings is None:
+         return RedirectResponse(url="/signin", status_code=303)
+    db=SessionLocal()
+    bookings=db.query(Booking).filter(Booking.customer_id==customer_id).all()
+    
+    db.close()
+    return templates.TemplateResponse("history.html",
+                                     {
+                                      "request":request,"bookings":bookings
+                                     })
