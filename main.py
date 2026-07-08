@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 from app.database.database import Base, engine
 from app.models.customer import Customer
 from app.models.room import Room
-from app.models.room import Booking 
+from app.models.booking import Booking 
 
 from fastapi import Form
 from fastapi.responses import RedirectResponse
@@ -224,7 +224,7 @@ def detail(request:Request,room_id:int):
     customer_id = request.session.get("customer_id")
 
     if customer_id is None:
-        return RedirectResponse(url="/sigin",status_code=303) 
+        return RedirectResponse(url="/signin",status_code=303) 
     room=db.query(Room).filter(Room.id==room_id).first()
     if room is None:
         db.close()
@@ -275,17 +275,49 @@ def success(request:Request):
                                       {
                                           "request":request
                                       })
+@app.get("/history", response_class=HTMLResponse)
+def history(request: Request):
 
-@app.get("/history",response_class=HTMLResponse)
-def history(request:Request):
-    customer_id=request.session.get("customer_id")
-    if bookings is None:
-         return RedirectResponse(url="/signin", status_code=303)
-    db=SessionLocal()
-    bookings=db.query(Booking).filter(Booking.customer_id==customer_id).all()
-    
+    customer_id = request.session.get("customer_id")
+
+    if customer_id is None:
+        return RedirectResponse(url="/signin", status_code=303)
+
+    db = SessionLocal()
+
+    bookings = db.query(Booking).filter(
+        Booking.customer_id == customer_id
+    ).all()
+
     db.close()
-    return templates.TemplateResponse("history.html",
-                                     {
-                                      "request":request,"bookings":bookings
-                                     })
+
+    return templates.TemplateResponse(
+        "history.html",
+        {
+            "request": request,
+            "bookings": bookings
+        }
+    )
+
+@app.get("/cancer_booking/{booking_id}")
+def cancel(booking_id:int):
+    db=SessionLocal()
+    booking=db.query(Booking).filter(Booking.id==booking_id).first();
+    if booking is None:
+        db.close()
+        return "Not found"
+    room = db.query(Room).filter(Room.id == booking.room_id
+    ).first()
+
+    if room is not None:
+        room.status = "Available"
+
+    db.delete(booking)
+    db.commit() 
+    db.close()
+    return RedirectResponse(url="/history",status_code=303);
+
+@app.get("/logout")
+def logout(request: Request):
+    request.session.pop("customer_id", None)
+    return RedirectResponse(url="/signin", status_code=303)

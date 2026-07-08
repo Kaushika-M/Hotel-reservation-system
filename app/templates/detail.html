@@ -23,7 +23,24 @@
             <td>{{room.description}}</td>   
         </tr>
     </table>
-    <a href="/confirmation/{room.id}"><button>Confirm Booking</button></a>
-    <a href="/search"><button>Back to Search</button></a>
+    <form action="/confirmation/{{ room.id }}" method="post">
+
+    <label>Check In</label>
+    <input type="date" name="check_in" required>
+
+    <br><br>
+
+    <label>Check Out</label>
+    <input type="date" name="check_out" required>
+
+    <br><br>
+
+    <button type="submit">Confirm Booking</button>
+
+</form>
+
+<a href="/search">
+    <button type="button">Back to Search</button>
+</a> 
 </body>
 </html>

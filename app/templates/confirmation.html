@@ -18,13 +18,13 @@
         <input type=number name="price" value="{{room.price}}" readonly>
         <br><br>
         <label for="check_in">Check-in</label>
-        <input type=date name="check_in">
+        <input type=date name="check_in" required>
         <br><br>
         <label for="check_out">Check-out</label>
-        <input type=date name="check_out">
+        <input type=date name="check_out" required>
         <br><br>
-        <button>Confirm Booking</button>
-        <a href="/search"><button>Cancel</button></a>
+        <button type="submit">Confirm Booking</button>
+        <a href="/search">Cancel</a>
     </form>
 </body>
 </html>
