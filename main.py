@@ -14,12 +14,15 @@ from app.database.database import SessionLocal
 from starlette.middleware.sessions import SessionMiddleware
 from datetime import date
 
+from fastapi.staticfiles import StaticFiles
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware,
     secret_key="my_secret_key"
 )
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
 
@@ -299,23 +302,33 @@ def history(request: Request):
         }
     )
 
-@app.get("/cancer_booking/{booking_id}")
-def cancel(booking_id:int):
-    db=SessionLocal()
-    booking=db.query(Booking).filter(Booking.id==booking_id).first();
+from app.models.booking import Booking
+
+@app.get("/cancel_booking/{booking_id}")
+def cancel_booking(booking_id: int):
+
+    db = SessionLocal()
+
+    booking = db.query(Booking).filter(
+        Booking.id == booking_id
+    ).first()
+
     if booking is None:
         db.close()
-        return "Not found"
-    room = db.query(Room).filter(Room.id == booking.room_id
+        return "Booking not found"
+
+    room = db.query(Room).filter(
+        Room.id == booking.room_id
     ).first()
 
     if room is not None:
         room.status = "Available"
 
     db.delete(booking)
-    db.commit() 
+
+    db.commit()
     db.close()
-    return RedirectResponse(url="/history",status_code=303);
+    return RedirectResponse(url="/history", status_code=303)
 
 @app.get("/logout")
 def logout(request: Request):
