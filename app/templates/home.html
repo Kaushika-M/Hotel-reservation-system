@@ -26,15 +26,20 @@
         </div>    
         <h3 >About us</h3>
         <section id="about">
-        <p>Welcome to Kings Hotel.Kings Hotel has been a landmark of gracious hospitality for over three decades. From the moment you step through our doors, you're greeted not just as a guest, but as god.Our story began with a simple belief: that every traveler deserves a stay that feels both luxurious and genuinely personal.Our team of hospitality professionals works around the clock with one mission: to make you feel at home — only better.Kings Hotel. Where Every Guest is God.</p>
+        <p>Welcome to Kings Hotel.Kings Hotel has been a landmark of gracious hospitality for over three decades. From the moment you step through our doors, you're greeted not just as a guest, but as god.Our story began with a simple belief: that every traveler deserves a stay that feels both luxurious and genuinely personal.Our team of hospitality professionals works with one mission: to make you feel at home — only better.Kings Hotel. Where Every Guest is God.</p>
         </section>
         <section id="rooms">
             <h3>Rooms</h3>
-            <div class="Standard">Standard Room ₹1000 / Night WiFi TV<img src="standard.jpg"><button>Book now</button></div>
-            <div class="deluxe">Deluxe ₹2000 / Night AC WiFi TV<img src="deluxe.jpg"><button>Book now</button></div>
-            <div class="suite">Suite ₹3000 / Night AC WiFi TV Mini Bar<img src="Suite.jpg"><button>Book now</button></div>
+            <div class="Standard">Standard Room ₹1000 / Night WiFi TV 
+            <img src="{{ url_for('static', path='images/standard.jpg') }}"> 
+            <button>Book now</button></div> 
+            
+            <div class="deluxe">Deluxe ₹2000 / Night AC WiFi TV<img src="{{ url_for('static', path='images/deluxe.jpg') }}"><button>Book now</button></div> 
+
+            <div class="suite">Suite ₹3000 / Night AC WiFi TV Mini Bar<img src="{{ url_for('static', path='images/Suite.jpg') }}">  <button>Book now</button></div>
         </section>    
     </main>
+    <hr style="border: none; height: 2px; background-color: #5181b7;">
     <footer id="con">
         <p>For Further details,contact us at</p>
         <p>📞 +91 XXXXX XXXXX </p>
