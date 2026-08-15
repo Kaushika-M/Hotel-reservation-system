@@ -86,7 +86,8 @@ def signin(request:Request,
     if customer.password != password:
         db.close()
         return "Incorrect password"
-    request.session["customer_id"]=customer.id
+    request.session["customer_id"]=customer.id  #remember 
+                                            #as current logged in user 
     
     db.close()
 
